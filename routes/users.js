@@ -49,6 +49,7 @@ router.post('/signup', cors.corsWithOptions, (req, res, next) => {
   });
 });
 
+<<<<<<< HEAD
 //if it is invalid authentication then passport.authenticate('local') returns an error to client
 //and code will not execute any further
 router.post('/login', cors.corsWithOptions, (req, res, next) => {
@@ -56,6 +57,45 @@ router.post('/login', cors.corsWithOptions, (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {
     if (err)
       return next(err);
+=======
+/* // if it is invalid authentication then passport.authenticate('local') returns an error to client
+  // and code will not execute any further
+router.post('/login', cors.corsWithOptions, passport.authenticate('local'), (req, res) => {
+
+  var token = authenticate.getToken({_id: req.user._id});
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'application/json');
+  res.json({success: true, token: token, status: 'You are successfully logged in!'});
+});*/
+
+router.post('/login', cors.corsWithOptions, (req, res, next) => {
+
+  // another way for implementing passport.authenticate('local') if you want 
+  // to respond to user with your own reply messages instead of defaults ones
+  passport.authenticate('local', (err, user, info) => {
+    if (err)
+      return next(err);
+
+    if (!user) {
+      res.statusCode = 401;
+      res.setHeader('Content-Type', 'application/json');
+      res.json({success: false, status: 'Login Unsuccessful!', err: info});
+    }
+    req.logIn(user, (err) => {
+      if (err) {
+        res.statusCode = 401;
+        res.setHeader('Content-Type', 'application/json');
+        res.json({success: false, status: 'Login Unsuccessful!', err: 'Could not log in user!'});          
+      }
+
+      var token = authenticate.getToken({_id: req.user._id});
+      res.statusCode = 200;
+      res.setHeader('Content-Type', 'application/json');
+      res.json({success: true, status: 'Login Successful!', token: token});
+    }); 
+  }) (req, res, next);
+});
+>>>>>>> d08add7c785ad1f66d07b50dec90d191dc1b50a6
 
     if (!user) {
       res.statusCode = 401;
