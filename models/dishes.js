@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 require('mongoose-currency').loadType(mongoose);
 const Currency = mongoose.Types.Currency;
-
+/*
 var commentSchema = new Schema({
     rating:  {
         type: Number,
@@ -20,7 +20,7 @@ var commentSchema = new Schema({
     }
 }, {
     timestamps: true
-});
+});*/
 
 const dishSchema = new Schema({
     name: {
@@ -52,8 +52,8 @@ const dishSchema = new Schema({
     featured: {
         type: Boolean,
         default:false      
-    },
-    comments:[commentSchema]
+    }
+    //comments:[commentSchema]
 }, {
     timestamps: true
 });
